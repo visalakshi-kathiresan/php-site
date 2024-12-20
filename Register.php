@@ -1,23 +1,32 @@
 <?php
-$fname=$_POST['fname'];
-$password = $_POST['password']; 
-$enpassword =md5('$password');
-$date = $_POST['date'];
-$gender = $_POST['gender'];
-$email = $_POST['email']; 
-$phone =$_POST['phone'];
+$hostname='localhost';
+$username='root';
+$password='';
+$databasename='user';
 
-//database
-$conn= New mysqli('localhost','visalakshi','kathir-07','data');
- if($conn->connect_error){
-   die('Connection Failed :' .$conn->connect_error);
-} else{
-    $super = $conn->prepare("insert into details(fname,password,date, gender, email, phone)
-    values('$fname','$enpassword','$date','$gender','$email','$phone')");
-    $super->execute();
-    echo "Registration Sucessfully.............";
-   $super->close();
-   $conn->close();
-   
+$mysqli =mysqli_connect($hostname,$username,$password,$databasename);
+
+session_start();
+
+if(isset($_POST['submit']))
+
+{
+    $name=$_POST['name'];
+    $password=$_POST['password'];
+    $enpassword =md5('$password');
+    $date=$_POST['date'];
+    $gender=$_POST['gender'];
+    $email=$_POST['email'];
+    $phone=$_POST['phone'];
+
+
+    $result=mysqli_query($mysqli, "insert into userdata value('','$name','$enpassword','$date','$gender','$email','$phone')");
+    if($result){
+         echo "user registration successfully,you can login now";
 }
+else{
+    echo "something wrong,data not stored";
+}
+}
+
 ?>
